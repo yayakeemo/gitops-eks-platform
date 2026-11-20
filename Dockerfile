@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- Stage 1: build dependencies into a virtualenv ----
-FROM python:3.13-slim AS builder
+FROM python:3.15.2-slim AS builder
 
 ENV PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
@@ -12,7 +12,9 @@ RUN python -m venv /opt/venv \
     && /opt/venv/bin/pip install -r requirements.txt
 
 # ---- Stage 2: minimal runtime image ----
-FROM python:3.13-slim AS runtime
+FROM python:3.15.2-slim AS runtime
+
+RUN apt-get update && apt-get upgrade -y
 
 ARG APP_VERSION=dev
 ENV APP_VERSION=${APP_VERSION} \

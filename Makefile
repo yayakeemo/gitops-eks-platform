@@ -4,7 +4,7 @@ VERSION ?= dev
 .PHONY: install test run build run-container scan clean
 
 install:
-	python -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
+	python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
 
 test:
 	.venv/bin/python -m pytest -q
