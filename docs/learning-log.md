@@ -42,5 +42,5 @@ One entry per working session. Write down what you tried, what broke, and how yo
   - Understand that OS-level vulnerabilities can't always be fully patched — some have no fixes yet
   - Be aware that multi-stage builds provide both size and security benefits by not shipping build tools
 
-### YYYY-MM-DD: repo created
+### 2026-11-20: repo created
 - Goal: set up the repo and run the demo app locally.
