@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# Secrets and local config. Never commit these.
+.env
+.env.*
+*.pem
+*.key
+credentials
+*.tfvars
+!example.tfvars
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+.terraform.lock.hcl.bak
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
