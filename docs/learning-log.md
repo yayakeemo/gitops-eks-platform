@@ -15,6 +15,34 @@ One entry per working session. Write down what you tried, what broke, and how yo
 
 ## Entries
 
+### 2026-11-21: Phase 3 start - Terraform basics and AWS infrastructure
+- Goal: Set up AWS infrastructure with Terraform (VPC, subnet, internet gateway)
+- What I did:
+  - Installed Terraform and created terraform/ directory
+  - Set up AWS credentials with `aws configure` (us-east-2 region)
+  - Created main.tf with AWS provider configuration
+  - Ran `terraform init` to download provider plugins
+  - Created first AWS resource: VPC with CIDR 10.0.0.0/16
+  - Created subnet within VPC: 10.0.1.0/24 in us-east-2a
+  - Created Internet Gateway and attached to VPC
+  - Used `terraform plan` to preview changes before applying
+  - Used `terraform apply` to create resources on AWS
+  - Verified resources with `terraform show` and AWS CLI
+- What broke / surprised me:
+  - Terraform wasn't available via standard Homebrew (had to download binary)
+  - Initially confused about DNS settings (enable_dns_hostnames vs enable_dns_support)
+  - Realized AWS VPC itself is free; only data transfer and other services charge
+  - `terraform plan` is reassuring—lets you see exactly what will be created before committing
+- How I fixed it:
+  - Downloaded Terraform directly from terraform.io
+  - Learned that both DNS settings are needed for EKS to work properly
+  - Set up AWS credentials with `aws configure`
+  - Used `terraform plan` between each change to understand what's happening
+- What I'd do differently:
+  - Set up Terraform earlier to understand IaC concepts before writing code
+  - Understand CIDR blocks better before diving in (10.0.0.0/16 vs 10.0.1.0/24)
+  - Create a .gitignore for terraform/ to exclude state files and .terraform/ directory
+
 ### 2026-11-21: Phase 2 CI/CD with GitHub Actions
 - Goal: Set up automated testing, building, scanning, and pushing on every push to main
 - What I did:
