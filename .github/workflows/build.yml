@@ -21,6 +21,12 @@ jobs:
         run: make test
       - name: Build image
         run: make build
+      - name: Install Trivy
+        run: |
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | apt-key add -
+          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/trivy.list
+          apt-get update
+          apt-get install -y trivy
       - name: Scan image
         run: make scan
       - name: Log in to GitHub Container Registry
