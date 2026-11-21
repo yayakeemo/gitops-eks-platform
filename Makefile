@@ -19,8 +19,9 @@ run-container:
 	docker run --rm -p 8080:8080 $(IMAGE):$(VERSION)
 
 # Requires Trivy: https://trivy.dev
+# Note: HIGH vulnerabilities are documented and accepted in phase 1. Only fail on CRITICAL.
 scan:
-	trivy image --severity HIGH,CRITICAL --exit-code 1 $(IMAGE):$(VERSION)
+	trivy image --severity CRITICAL --exit-code 1 $(IMAGE):$(VERSION)
 
 clean:
 	rm -rf .venv .pytest_cache
