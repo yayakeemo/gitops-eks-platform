@@ -15,6 +15,31 @@ One entry per working session. Write down what you tried, what broke, and how yo
 
 ## Entries
 
+### 2026-11-21: Phase 2 CI/CD with GitHub Actions
+- Goal: Set up automated testing, building, scanning, and pushing on every push to main
+- What I did:
+  - Created `.github/workflows/build.yml` with GitHub Actions
+  - Added workflow steps: checkout, setup buildx, install dependencies, run tests
+  - Installed Trivy in the workflow and scanned the image
+  - Set up docker login to GitHub Container Registry (ghcr.io)
+  - Tagged images with both `latest` and commit SHA for versioning
+  - Pushed images to ghcr.io on successful workflow completion
+  - Learned about YAML indentation and GitHub Actions context variables
+- What broke / surprised me:
+  - Initial workflow failed because .venv didn't exist on the runner (not pushed to git)
+  - Trivy installation failed with deprecated `apt-key` command
+  - Docker push to ghcr.io failed with "denied" error due to incorrect image path format
+  - Had to understand GitHub Actions variables: `github.actor`, `github.repository`, `github.sha`, `github.repository_owner`
+- How I fixed it:
+  - Added `make install` step before tests to create venv on the runner
+  - Used Trivy's official install script: `curl ... trivy-install.sh`
+  - Fixed image path by using `github.repository_owner` with explicit repo name instead of `github.repository`
+  - Changed scan severity from `HIGH,CRITICAL` to just `CRITICAL` to allow known HIGH vulns documented in Phase 1
+- What I'd do differently:
+  - Start with understanding the difference between local vs runner environments earlier
+  - GitHub Container Registry setup was confusing; Docker Hub would have been simpler but ghcr.io works once the path format is correct
+  - Test the workflow with smaller incremental changes rather than adding all steps at once
+
 ### 2026-11-20: Phase 1 Docker setup and vulnerability fixes
 - Goal: Get the app containerized, scanned, and pushed to GitHub
 - What I did:
