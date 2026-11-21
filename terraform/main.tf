@@ -38,3 +38,40 @@ resource "aws_internet_gateway" "main" {
     Name = "gitops-igw"
   }
 }
+
+resource "aws_route_table" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+}
+
+  tags = {
+    Name = "gitops-route-table"
+  }
+}
+
+resource "aws_route_table_association" "main" {
+  subnet_id = aws_subnet.main.id
+  route_table_id = aws_route_table.main.id
+}
+
+resource "aws_ecr_repository" "gitops" {
+  name = "gitops-eks-platform"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+  
+  tags = {
+    Name = "gitops-ecr"
+  }
+  
+}
+
+output "repository_url" {
+    value = aws_ecr_repository.gitops.repository_url
+    description = "The URL of the ECR repository"
+}
