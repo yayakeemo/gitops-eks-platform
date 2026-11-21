@@ -75,3 +75,28 @@ output "repository_url" {
     value = aws_ecr_repository.gitops.repository_url
     description = "The URL of the ECR repository"
 }
+
+data "aws_iam_policy_document" "eks_trust" {
+  statement {
+    effect = "Allow"
+    principals {
+      type = "Service"
+      identifiers = ["eks.amazonaws.com"]
+    }
+    actions = [
+      "sts:AssumeRole"
+    ]
+  }
+}
+
+resource "aws_iam_role" "eks_role" {
+  name = "gitops-eks-cluster-role"
+  assume_role_policy = data.aws_iam_policy_document.eks_trust.json
+}
+
+resource "aws_iam_role_policy_attachment" "eks_cluster"{
+  role = aws_iam_role.eks_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
+}
+
+    
