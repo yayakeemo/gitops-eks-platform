@@ -15,9 +15,20 @@ If time runs short, cut scope from phase 6, not the earlier phases.
 
 ## Phase 1 checklist
 
-- [ ] Run the app locally and the tests pass
-- [ ] Build the image and run it
-- [ ] Confirm it runs as a non-root user (`docker run --rm gitops-demo:dev id`)
-- [ ] Scan with Trivy and fix or document findings
-- [ ] Compare image size against a single-stage build and record it in the learning log
-- [ ] Write ADR 0002 notes (base image choice) in your own words
+- [x] Run the app locally and the tests pass
+- [x] Build the image and run it
+- [x] Confirm it runs as a non-root user (`docker run --rm gitops-demo:dev id`)
+- [x] Scan with Trivy and fix or document findings
+- [x] Compare image size against a single-stage build and record it in the learning log
+- [x] Write ADR 0002 notes (base image choice) in your own words
+
+## Phase 2 checklist
+
+- [x] Create GitHub Actions workflow that triggers on push to `main`
+- [x] Workflow runs tests with `make test`
+- [x] Workflow builds image with `make build`
+- [x] Workflow scans image with Trivy (fails on CRITICAL, allows documented HIGH)
+- [x] Workflow logs in to ghcr.io
+- [x] Workflow tags image with `latest` and commit SHA
+- [x] Workflow pushes both tags to registry
+- [x] Verify image appears in ghcr.io packages
