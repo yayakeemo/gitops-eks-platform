@@ -34,7 +34,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image
         run: |
-          docker tag gitops-demo:dev ghcr.io/${{ github.repository }}:latest
-          docker tag gitops-demo:dev ghcr.io/${{ github.repository }}:${{ github.sha }}
-          docker push ghcr.io/${{ github.repository }}:latest
-          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
+          docker tag gitops-demo:dev ghcr.io/${{ github.repository_owner }}/gitops-eks-platform:latest
+          docker tag gitops-demo:dev ghcr.io/${{ github.repository_owner }}/gitops-eks-platform:${{ github.sha }}
+          docker push ghcr.io/${{ github.repository_owner }}/gitops-eks-platform:latest
+          docker push ghcr.io/${{ github.repository_owner }}/gitops-eks-platform:${{ github.sha }}
