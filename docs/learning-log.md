@@ -42,6 +42,16 @@ One entry per working session. Write down what you tried, what broke, and how yo
   - Set up Terraform earlier to understand IaC concepts before writing code
   - Understand CIDR blocks better before diving in (10.0.0.0/16 vs 10.0.1.0/24)
   - Create a .gitignore for terraform/ to exclude state files and .terraform/ directory
+- Phase 3 complete: AWS Infrastructure as Code
+  - Created VPC with CIDR 10.0.0.0/16, subnet 10.0.1.0/24 in us-east-2a
+  - Created Internet Gateway and route table with internet routing
+  - Created ECR repository with image scanning on push
+  - Created IAM role for EKS with trust policy and AmazonEKSClusterPolicy
+  - Set up remote state in S3 for safe backup and team collaboration
+  - Enabled S3 versioning for state file rollback capability
+  - Added budget alert: $15 USD/month with 80% threshold notification
+  - Learned: data blocks (read) vs resource blocks (create), IAM trust policies, Terraform backends
+  - Learned: S3 as backend storage, `use_lockfile` for state locking, budget management
 
 ### 2026-11-21: Phase 2 CI/CD with GitHub Actions
 - Goal: Set up automated testing, building, scanning, and pushing on every push to main
