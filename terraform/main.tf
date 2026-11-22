@@ -99,4 +99,46 @@ resource "aws_iam_role_policy_attachment" "eks_cluster"{
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
-    
+resource "aws_s3_bucket" "terraform_state"{
+  bucket = "gitops-eks-platform-${data.aws_caller_identity.current.account_id}"
+
+  tags = {
+    Name = "gitops-terraform-state"
+  }
+}
+
+resource "aws_s3_bucket_versioning" "terraform_state" {
+  bucket = aws_s3_bucket.terraform_state.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+data "aws_caller_identity" "current" {}
+
+resource "aws_budgets_budget" "gitops" {
+  name              = "gitops-monthly-budget"
+  budget_type       = "COST"
+  limit_amount      = "15"
+  limit_unit        = "USD"
+  time_unit         = "MONTHLY"
+  time_period_start = "2026-11-01_00:00"
+
+  cost_filter {
+    name = "Service"
+    values = ["EC2", "EKS", "S3", "ECS", "NAT Gateway", "Data Transfer"]
+  }
+
+  notification {
+    comparison_operator = "GREATER_THAN"
+    threshold           = 80
+    threshold_type      = "PERCENTAGE"
+    notification_type   = "FORECASTED"
+    subscriber_email_addresses = ["yahiahussein2001@gmail.com"]
+  }
+
+  tags = {
+    Name = "gitops-budget"
+  }
+}
+
