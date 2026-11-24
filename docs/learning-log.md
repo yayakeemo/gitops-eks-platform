@@ -15,6 +15,42 @@ One entry per working session. Write down what you tried, what broke, and how yo
 
 ## Entries
 
+### 2026-11-23: Phase 4 - Kubernetes on kind
+- Goal: Deploy Flask app to local Kubernetes cluster with deployments, services, ingress, health checks
+- What I did:
+  - Installed `kind` (Kubernetes in Docker)
+  - Created kind cluster with `kind create cluster --name gitops`
+  - Created Deployment manifest with 2 replicas, liveness/readiness probes, resource limits
+  - Loaded Docker image into kind cluster with `kind load docker-image`
+  - Created Service with NodePort to expose pods
+  - Created Ingress manifest for HTTP routing (learned about ingress controllers)
+  - Used `kubectl port-forward` to access app from localhost during testing
+  - Demonstrated rolling update: updated image from dev to v1.0 with zero downtime
+  - Demonstrated rollback: reverted to previous version with `kubectl rollout undo`
+  - Verified pod distribution across nodes with `kubectl get pods -o wide`
+- What broke / surprised me:
+  - Initial pod failures: `ErrImageNeverPull` because image wasn't in kind's Docker
+  - Capitalization error in YAML: `imagePullPolicy` not `ImagePullPolicy`
+  - NodePort doesn't directly map to localhost in kind (need port-forward)
+  - Ingress doesn't work without an ingress controller (nginx-ingress)
+- How I fixed it:
+  - Loaded image into kind with `kind load docker-image gitops-demo:dev --name gitops`
+  - Fixed YAML capitalization in deployment
+  - Used `kubectl port-forward svc/gitops-app 8080:80` to test
+  - Decided to skip nginx-ingress for learning phase (manifests still demonstrate concepts)
+- What I'd do differently:
+  - Understand `kind` limitations earlier (isolated Docker, needs image loading)
+  - Create Kubernetes manifests in separate k8s/ folder from the start
+  - Test each manifest (Deployment, Service) incrementally before combining
+- Key learnings:
+  - **Pod vs Node**: Node = machine/server; Pod = container running on node
+  - **Deployment**: Manages replicas automatically, handles pod creation/deletion
+  - **Service**: Load balancer that routes traffic to pods with matching labels
+  - **Rolling updates**: Kubernetes automatically updates pods one by one, zero downtime
+  - **Rollbacks**: Revert to previous version instantly with `kubectl rollout undo`
+  - **Health probes**: Liveness (restart if dead) vs Readiness (don't send traffic if sick)
+  - **Port-forward**: Temporary tunnel to access cluster from local machine (for testing only)
+
 ### 2026-11-21: Phase 3 start - Terraform basics and AWS infrastructure
 - Goal: Set up AWS infrastructure with Terraform (VPC, subnet, internet gateway)
 - What I did:
