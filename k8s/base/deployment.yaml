@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: gitops-app
-          image: gitops-demo:v1.0
+          image: gitops-demo:e9a3ac4
           imagePullPolicy: Never
 
           ports:
